@@ -8,16 +8,16 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'App',
       component: App,
       children: [{
         path: '',
-        name: 'Home',
         component: () => import('@/pages/home/Home')
       }, {
         path: '/item',
-        name: 'Item',
-        components: () => import('@/pages/item/Item')
+        component: () => import('@/pages/item/Item')
+      }, {
+        path: '/score',
+        component: () => import('@/pages/score/Score')
       }]
     }
   ]

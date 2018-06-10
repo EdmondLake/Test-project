@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <item-container father-component="home"></item-container>
+    <item-container father-component='Home'></item-container>
   </div>
 </template>
 
@@ -10,6 +10,9 @@ export default {
   name: 'Home',
   components: {
     itemContainer
+  },
+  created () {
+
   }
 }
 </script>
