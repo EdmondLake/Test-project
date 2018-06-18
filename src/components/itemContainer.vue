@@ -2,10 +2,10 @@
   <section>
     <header class="top-tips">
       <span class="num-tip" v-if="fatherComponent === 'Home'">
-        第一周
+        {{level}}
       </span>
       <span class="num-tip" v-if="fatherComponent === 'Item'">
-        题目1
+        题目{{itemNum}}
       </span>
     </header>
     <!--home-->
@@ -13,27 +13,115 @@
       <div class="home-logo item-container-style"></div>
       <router-link to="Item" class="start button-style"></router-link>
     </div>
-    <!--item-->
+    <!--item题目页面-->
     <div v-if="fatherComponent === 'Item'">
+      <!--题目页详情-->
       <div class="item-back item-container-style">
-        <div class="item-list-container">
-          <header class="item-title">题目一</header>
+        <div class="item-list-container" v-if="itemDetail.length > 0">
+          <header class="item-title">{{itemDetail[itemNum-1].topic_name}}</header>
           <ul>
-            <li class="item-list">
-              <span class="option-style">A</span>
-              <span class="option-detail">答案A</span>
+            <li
+              class="item-list"
+              v-for="(item, index) in itemDetail[itemNum-1].topic_answer"
+              :key="index"
+              @click="choosed(index, item.topic_answer_id)"
+            >
+              <span
+                class="option-style"
+                :class="{'has-choosed':choosedNum===index}"
+              >
+                {{chooseType(index)}}
+              </span>
+              <span class="option-detail">{{item.answer_name}}</span>
             </li>
           </ul>
         </div>
       </div>
+      <!--下一题按钮-->
+      <span class="next-item button-style" @click="nextItem" v-if="itemNum<itemDetail.length"></span>
+      <!--提交按钮-->
+      <span class="submit-item button-style" @click="submitAnswer" v-else></span>
     </div>
   </section>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'itemContainer',
-  props: ['fatherComponent']
+  props: ['fatherComponent'],
+  data () {
+    return {
+      // 题目id
+      itemId: null,
+      // 选中的答案的索引
+      choosedNum: null,
+      // 选中答案id
+      choosedId: null
+    }
+  },
+  computed: mapState([
+    // 第几题
+    'itemNum',
+    // 第几周
+    'level',
+    // 题目详情
+    'itemDetail',
+    // 计时器
+    'timer'
+  ]),
+  methods: {
+    ...mapActions([
+      'addNum', 'initializeData'
+    ]),
+    // 点击下一题
+    nextItem () {
+      if (this.choosedNum !== null) {
+        this.choosedNum = null
+        // 保存答案，题目索引加一，跳到下一题
+        this.addNum(this.choosedId)
+      } else {
+        alert('您还没有选择答案哦')
+      }
+    },
+    // 索引0-3对应答案A-D
+    chooseType: type => {
+      switch (type) {
+        case 0:
+          return 'A'
+        case 1:
+          return 'B'
+        case 2:
+          return 'C'
+        case 3:
+          return 'D'
+      }
+    },
+    // 选中的答案信息
+    // type：选中的答案索引
+    // id：选中的答案选项的id
+    choosed (type, id) {
+      this.choosedNum = type
+      this.choosedId = id
+    },
+    // 最后一题，提交，清空定时器，跳转到分数页面
+    submitAnswer () {
+      if (this.choosedNum !== null) {
+        this.addNum(this.choosedId)
+        clearInterval(this.timer)
+        this.$router.push('score')
+      } else {
+        alert('你还没有选择答案哦')
+      }
+    }
+  },
+  created () {
+    // 初始化信息
+    if (this.fatherComponent === 'home') {
+      this.initializeData()
+      document.body.style.backgroundImage = 'url(../../static/img/1-1.png)'
+    }
+  }
 }
 </script>
 
@@ -112,10 +200,13 @@ export default {
       font-size: .65rem
       color: #fff
       line-height: .7rem
+      margin-bottom: .5rem
     .item-list
       font-size: 0
       margin-top: .4rem
       width: 10rem
+      line-height: .725rem
+      margin-bottom: .5rem
       span
         display: inline-block
         font-size: .6rem
@@ -140,5 +231,4 @@ export default {
         //选项文字
       .option-detail
         width: 7.5rem
-        padding-top: .11rem
 </style>
