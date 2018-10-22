@@ -5,7 +5,7 @@
         <span class="score-num">{{score}}</span>
         <span class="fenshu">分！</span>
       </header>
-      <div class="result-tip">考得不错</div>
+      <div class="result-tip">{{scoreTips}}</div>
     </div>
     <div class="share-button" @click="showCover"></div>
     <div class="follow-detail">
@@ -72,7 +72,7 @@ export default {
   created () {
     this.computedScore()
     this.getScoreTip()
-    document.body.style.backgroundImage = 'url(../../../static/img/4-1.jpg)'
+    document.body.style.backgroundImage = 'url(../../static/img/4-1.jpg)'
   }
 }
 </script>
