@@ -24,9 +24,9 @@ export default {
   name: 'Score',
   data () {
     return {
-      showHide: false,
-      score: 0,
-      scoreTips: '',
+      showHide: false, // 是否显示提示
+      score: 0, // 分数
+      scoreTips: '', // 分数评价
       rightAnswer: [2, 7, 12, 13, 20], // 正确答案id（topic_answer_id）
       scoreTipsArr: [
         '你说，你是不是把知识都还给小学老师了？',
@@ -38,41 +38,28 @@ export default {
     }
   },
   computed: mapState(['answerid']),
-  methods: {
-    showCover () {
-      this.showHide = !this.showHide
-    },
-    computedScore () {
-      this.answerid.forEach((item, index) => {
-        if (item === this.rightAnswer[index]) {
-          this.score += 20
-        }
-      })
-    },
-    getScoreTip () {
-      switch (this.score) {
-        case this.score <= 20:
-          this.scoreTips = this.scoreTipsArr[0]
-          break
-        case this.score <= 40:
-          this.scoreTips = this.scoreTipsArr[1]
-          break
-        case this.score <= 60:
-          this.scoreTips = this.scoreTipsArr[2]
-          break
-        case this.score <= 80:
-          this.scoreTips = this.scoreTipsArr[3]
-          break
-        default:
-          this.scoreTips = this.scoreTipsArr[4]
-          break
-      }
-    }
-  },
   created () {
     this.computedScore()
     this.getScoreTip()
     document.body.style.backgroundImage = 'url(../../static/img/4-1.jpg)'
+  },
+  methods: {
+    showCover () {
+      this.showHide = !this.showHide
+    },
+    // 计算分数
+    computedScore () {
+      this.answerid.forEach((item, index) => {
+        if (item === this.rightAnswer[index]) {
+          this.score += 20
+          // console.log(this.score)
+        }
+      })
+    },
+    getScoreTip () {
+      let index = Math.ceil(this.score / 20) - 1
+      this.scoreTips = this.scoreTipsArr[index]
+    }
   }
 }
 </script>
