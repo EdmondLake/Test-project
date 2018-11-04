@@ -119,7 +119,7 @@ export default {
     // 初始化信息
     if (this.fatherComponent === 'home') {
       this.initializeData()
-      document.body.style.backgroundImage = 'url(../../static/img/1-1.png)'
+      document.body.style.backgroundImage = 'url(../images/1-1.png)'
     }
   }
 }

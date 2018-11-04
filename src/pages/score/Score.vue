@@ -41,7 +41,6 @@ export default {
   created () {
     this.computedScore()
     this.getScoreTip()
-    document.body.style.backgroundImage = 'url(../../static/img/4-1.jpg)'
   },
   methods: {
     showCover () {
