@@ -9,7 +9,7 @@
     </div>
     <div class="share-button" @click="showCover"></div>
     <div class="follow-detail">
-      <header class="follow-header">关注葡萄之家，获取答案</header>
+      <header class="follow-header">关注XXXX，获取答案</header>
       <img src="../../images/4-4.png" alt="" class="follow-img">
     </div>
     <div class="share-cover" v-show="showHide" @click="showCover">
